@@ -1,4 +1,3 @@
-[Uploading README.md…]()
 # Tic Tac Toe
 
 A modern, feature-rich Tic Tac Toe game with local and cross-tab multiplayer support. Built with vanilla HTML, CSS, and JavaScript - no frameworks, no server required.
