@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A modern Tic Tac Toe game for two players">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Player Name Input Screen -->
+    <div class="name-input-screen" id="name-input-screen">
+        <div class="input-wrapper">
+            <div class="input-container">
+                <header class="header">
+                    <h1 class="title">Tic Tac Toe</h1>
+                    <p class="subtitle">Enter Player Names</p>
+                </header>
+
+                <!-- Mode Selector -->
+                <div class="mode-selector" id="mode-selector">
+                    <button type="button" class="mode-btn active" id="mode-local" data-mode="local">
+                        Local Play
+                        <span class="mode-desc">Same device, same tab</span>
+                    </button>
+                    <button type="button" class="mode-btn" id="mode-online" data-mode="online-tab">
+                        Online (Same Device)
+                        <span class="mode-desc">Different tabs/browsers</span>
+                    </button>
+                </div>
+
+                <!-- Local Mode Form -->
+                <form id="name-form" class="name-form" data-mode="local">
+                    <div class="input-group">
+                        <label for="player-x-name" class="input-label">
+                            <span class="label-mark x-mark">X</span>
+                            Player 1
+                        </label>
+                        <input
+                            type="text"
+                            id="player-x-name"
+                            class="name-input"
+                            placeholder="Enter name"
+                            maxlength="20"
+                            required
+                            autocomplete="off"
+                        >
+                    </div>
+
+                    <div class="input-group">
+                        <label for="player-o-name" class="input-label">
+                            <span class="label-mark o-mark">O</span>
+                            Player 2
+                        </label>
+                        <input
+                            type="text"
+                            id="player-o-name"
+                            class="name-input"
+                            placeholder="Enter name"
+                            maxlength="20"
+                            required
+                            autocomplete="off"
+                        >
+                    </div>
+
+                    <button type="submit" class="start-button">Start Game</button>
+                </form>
+
+                <!-- Online Mode: Create Room View -->
+                <form id="create-room-form" class="name-form online-view" data-view="create-room" style="display: none;">
+                    <div class="input-group">
+                        <label for="host-name" class="input-label">Your Name</label>
+                        <input
+                            type="text"
+                            id="host-name"
+                            class="name-input"
+                            placeholder="Enter your name"
+                            maxlength="20"
+                            required
+                            autocomplete="off"
+                        >
+                    </div>
+                    <button type="submit" class="start-button">Create Room</button>
+                    <button type="button" class="online-toggle-link" id="toggle-join-view">Join a Room Instead</button>
+                </form>
+
+                <!-- Online Mode: Join Room View -->
+                <form id="join-room-form" class="name-form online-view" data-view="join-room" style="display: none;">
+                    <div class="input-group">
+                        <label for="guest-name" class="input-label">Your Name</label>
+                        <input
+                            type="text"
+                            id="guest-name"
+                            class="name-input"
+                            placeholder="Enter your name"
+                            maxlength="20"
+                            required
+                            autocomplete="off"
+                        >
+                    </div>
+                    <div class="input-group">
+                        <label for="room-code-input" class="input-label">Room Code</label>
+                        <input
+                            type="text"
+                            id="room-code-input"
+                            class="name-input"
+                            placeholder="Enter 4-char code"
+                            maxlength="4"
+                            required
+                            autocomplete="off"
+                            style="text-transform: uppercase; letter-spacing: 0.5em; text-align: center;"
+                        >
+                    </div>
+                    <button type="submit" class="start-button">Join Room</button>
+                    <button type="button" class="online-toggle-link" id="toggle-create-view">Create a Room Instead</button>
+                </form>
+
+                <!-- Online Mode: Waiting View -->
+                <div id="waiting-view" class="waiting-view online-view" style="display: none;">
+                    <div class="waiting-spinner"></div>
+                    <p class="waiting-text">Waiting for opponent...</p>
+                    <div class="room-code-display">
+                        <p class="room-code-label">Share this code:</p>
+                        <div class="room-code-container">
+                            <span class="room-code-value" id="room-code-display"></span>
+                            <button type="button" class="copy-btn" id="copy-code-btn">Copy</button>
+                        </div>
+                    </div>
+                    <button type="button" class="cancel-btn" id="cancel-room-btn">Cancel</button>
+                </div>
+            </div>
+
+            <!-- Recent Winners on Name Input Page -->
+            <aside class="name-page-leaderboard">
+                <h2 class="scoreboard-title">🏆 Recent Champions</h2>
+                <div class="leaderboard-list" id="name-page-leaderboard-list">
+                    <p class="empty-message">No games won yet</p>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Main Game Wrapper -->
+    <div class="game-wrapper" id="game-wrapper" style="display: none;">
+        <!-- Main Game Container -->
+        <div class="container" id="game-container">
+            <header class="header">
+                <h1 class="title">Tic Tac Toe</h1>
+                <p class="subtitle">Two Player Game</p>
+            </header>
+
+            <!-- Score Display -->
+            <div class="scoreboard" role="region" aria-label="Game scores">
+                <div class="score-card">
+                    <span class="score-label" id="label-x">Player X</span>
+                    <span class="score-value" id="score-x">0</span>
+                </div>
+                <div class="score-divider">
+                    <span class="target-score">First to 5 wins the match!</span>
+                </div>
+                <div class="score-card">
+                    <span class="score-label" id="label-o">Player O</span>
+                    <span class="score-value" id="score-o">0</span>
+                </div>
+            </div>
+
+            <main class="game-area">
+                <div class="status-bar">
+                    <span class="turn-indicator">Turn: <span id="current-player" class="player-mark">X</span></span>
+                    <div class="online-indicator" id="online-indicator" style="display: none;">
+                        <span class="online-dot"></span>
+                        <span id="online-status-text">Opponent connected</span>
+                    </div>
+                </div>
+
+                <div class="board" id="board" role="grid" aria-label="Tic Tac Toe board">
+                    <button class="cell" data-index="0" aria-label="Cell 1"></button>
+                    <button class="cell" data-index="1" aria-label="Cell 2"></button>
+                    <button class="cell" data-index="2" aria-label="Cell 3"></button>
+                    <button class="cell" data-index="3" aria-label="Cell 4"></button>
+                    <button class="cell" data-index="4" aria-label="Cell 5"></button>
+                    <button class="cell" data-index="5" aria-label="Cell 6"></button>
+                    <button class="cell" data-index="6" aria-label="Cell 7"></button>
+                    <button class="cell" data-index="7" aria-label="Cell 8"></button>
+                    <button class="cell" data-index="8" aria-label="Cell 9"></button>
+                </div>
+
+                <div class="result-message" id="result" role="alert" aria-live="polite"></div>
+
+                <!-- Countdown Timer Display -->
+                <div class="countdown-display" id="countdown-display" style="display: none;">
+                    <span class="countdown-text">New game in </span>
+                    <span class="countdown-number" id="countdown-number">5</span>
+                    <span class="countdown-text"> seconds...</span>
+                </div>
+
+                <!-- Match Winner Countdown -->
+                <div class="match-winner-display" id="match-winner-display" style="display: none;">
+                    <span class="winner-text">🎉 </span>
+                    <span class="winner-name" id="winner-name"></span>
+                    <span class="winner-text"> Wins the Match! 🎉</span>
+                    <div class="new-match-countdown">
+                        <span class="countdown-text">Starting new match in </span>
+                        <span class="countdown-number" id="match-countdown-number">10</span>
+                        <span class="countdown-text"> seconds...</span>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="reset-button" id="reset-btn">New Game</button>
+                    <button class="reset-button secondary" id="reset-match-btn">Reset Match</button>
+                </div>
+            </main>
+
+            <footer class="footer">
+                <p>Player X goes first • Take turns clicking cells</p>
+            </footer>
+        </div>
+
+        <!-- Side Scoreboard on the Right -->
+        <aside class="side-scoreboard">
+            <h2 class="scoreboard-title">🏆 Leaderboard</h2>
+            <div class="leaderboard-list" id="leaderboard-list">
+                <p class="empty-message">No games won yet</p>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Reset Match Confirmation Modal -->
+    <div class="modal-overlay" id="reset-modal">
+        <div class="modal-content">
+            <h2 class="modal-title">Reset Match?</h2>
+            <p class="modal-message">Are you sure you want to reset the match? All scores will be lost.</p>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" id="modal-cancel">Cancel</button>
+                <button class="modal-btn confirm" id="modal-confirm">Yes, Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Disconnect Modal -->
+    <div class="modal-overlay" id="disconnect-modal" style="display: none;">
+        <div class="modal-content">
+            <h2 class="modal-title">Opponent Disconnected</h2>
+            <p class="modal-message">Your opponent has left the game.</p>
+            <div class="modal-actions">
+                <button class="modal-btn" id="disconnect-new-room">New Room</button>
+                <button class="modal-btn cancel" id="disconnect-home">Main Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <script src="script.js"></script>
+</body>
+</html>
