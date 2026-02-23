@@ -2,6 +2,8 @@
 
 A modern, feature-rich Tic Tac Toe game with local and cross-tab multiplayer support. Built with vanilla HTML, CSS, and JavaScript - no frameworks, no server required.
 
+**Live Demo:** [https://tictactoe.synthtrix.com/](https://tictactoe.synthtrix.com/)
+
 ![Game screenshot](images/forntend.png)
 
 ---
@@ -11,6 +13,7 @@ A modern, feature-rich Tic Tac Toe game with local and cross-tab multiplayer sup
 - **Two game modes** - Local same-tab play and Online cross-tab play
 - **Match system** - First to 5 wins takes the match
 - **Persistent leaderboard** - Win history stored across sessions via localStorage
+- **Modern glass UI** - Single-column centered layout with animated gradient + glass cards
 - **Dark neon theme** - Animated glows, pop-in effects, and confetti on wins
 - **Cross-tab multiplayer** - Real-time sync via localStorage storage events (no server)
 - **Disconnect detection** - Heartbeat system alerts you if opponent leaves
@@ -20,7 +23,9 @@ A modern, feature-rich Tic Tac Toe game with local and cross-tab multiplayer sup
 
 ## Getting Started
 
-No build tools or dependencies needed for playing. Just open the file in a browser.
+Play instantly at **[tictactoe.synthtrix.com](https://tictactoe.synthtrix.com/)** - no install needed.
+
+Or run locally:
 
 ```bash
 # Clone the repository
@@ -81,6 +86,12 @@ npm run test:watch
 - An online indicator shows whether your opponent is connected
 - If your opponent disconnects, a modal lets you start a new room or return to the main menu
 - "New Game" and "Reset Match" sync across both tabs
+
+### Leaderboard Panel
+
+- Use the **Leaderboard** button below the game to expand/collapse standings
+- The panel animates open/closed and becomes scrollable for long lists
+- Leaderboard data is shared with the start screen "Recent Champions" panel
 
 ---
 
@@ -144,6 +155,17 @@ Each tab writes a heartbeat every 3 seconds. If no heartbeat is received from th
 | Firefox | 55+ |
 | Safari | 12+ |
 | Edge | 79+ |
+
+---
+
+## Recent UI Updates
+
+- Replaced side leaderboard with a collapsible bottom leaderboard panel
+- Tightened spacing for scoreboard, game area, and turn indicator
+- Centered and restyled the turn indicator as a pill with subtle pulse animation
+- Improved leaderboard layering and overflow handling to prevent overlap
+- Added entrance animations for scoreboard, board area, and leaderboard section
+- Refined mobile spacing and button sizing for 375px and 480px breakpoints
 
 ---
 
